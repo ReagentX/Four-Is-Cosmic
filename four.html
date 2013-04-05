@@ -1,0 +1,250 @@
+<html>
+
+<head>
+
+<title>ReagentX | Cosmic Four</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+<script language="JavaScript">
+
+function displayMagnitude(order) {
+  switch(order)
+	{
+		case 0:
+			theWord = "";
+			break;
+		case 1:
+			theWord = "thousand";
+			break;
+		case 2:
+			theWord = "million";
+			break;
+		case 3:
+			theWord = "billion";
+			break;
+		case 4:
+			theWord = "trillion";
+			break
+		default:
+			theWord = "ERROR";
+		}
+	return theWord;
+}
+
+
+function digitWords(digit,place,prior) {
+	theWord = "";
+	switch(digit)
+	{
+	case 0:
+		if (place == 1 && prior == 1)
+			{ theWord = "ten" }
+		else 
+			{ theWord = "" };
+		break;
+	case 1:
+		switch(place)
+		{
+		case 0:
+			theWord = "one hundred";
+			break;
+		case 2:
+			theWord = "";
+			break;
+		case 1:
+			if (prior == 1) {theWord = "eleven"} else {theWord = "one"};
+			break;
+		}
+		break;
+	case 2:
+		switch(place)
+		{
+		case 0:
+			theWord = "two hundred";
+			break;
+		case 2:
+			theWord = "twenty";
+			break;
+		case 1:
+			if (prior == 1) {theWord = "twelve"} else {theWord = "two"};
+			break;
+		}
+		break;
+	case 3:
+		switch(place)
+		{
+		case 0:
+			theWord = "three hundred";
+			break;
+		case 2:
+			theWord = "thirty";
+			break;
+		case 1:
+			if (prior == 1) {theWord = "thirteen"} else {theWord = "three"};
+			break;
+		}
+		break;
+	case 4:
+		switch(place)
+		{
+		case 0:
+			theWord = "four hundred";
+			break;
+		case 2:
+			theWord = "forty";
+			break;
+		case 1:
+			if (prior == 1) {theWord = "fourteen"} else {theWord = "four"};
+			break;
+		}
+		break;
+	case 5:
+		switch(place)
+		{
+		case 0:
+			theWord = "five hundred";
+			break;
+		case 2:
+			theWord = "fifty";
+			break;
+		case 1:
+			if (prior == 1) {theWord = "fifteen"} else {theWord = "five"};
+			break;
+		}
+		break;
+	case 6:
+		switch(place)
+		{
+		case 0:
+			theWord = "six hundred";
+			break;
+		case 2:
+			theWord = "sixty";
+			break;
+		case 1:
+			if (prior == 1) {theWord = "sixteen"} else {theWord = "six"};
+			break;
+		}
+		break;
+	case 7:
+		switch(place)
+		{
+		case 0:
+			theWord = "seven hundred";
+			break;
+		case 2:
+			theWord = "seventy";
+			break;
+		case 1:
+			if (prior == 1) {theWord = "seventeen"} else {theWord = "seven"};
+			break;
+		}
+		break;
+	case 8:
+		switch(place)
+		{
+		case 0:
+			theWord = "eight hundred";
+			break;
+		case 2:
+			theWord = "eighty";
+			break;
+		case 1:
+			if (prior == 1) {theWord = "eighteen"} else {theWord = "eight"};
+			break;
+		}
+		break;
+	case 9:
+		switch(place)
+		{
+		case 0:
+			theWord = "nine hundred";
+			break;
+		case 2:
+			theWord = "ninety";
+			break;
+		case 1:
+			if (prior == 1) {theWord = "nineteen"} else {theWord = "nine"};
+			break;
+		}
+		break;
+	default:
+		theWord = "ERROR";
+	}
+	return theWord;
+}
+
+function displayNumberInWords(guess) {
+
+	numDigitsTxt = guess.toString();
+	numDigits = numDigitsTxt.length;
+	var myWord = "";
+	var priorDigit = 0;
+	for (i=0;i<=numDigits - 1;i++)
+	{
+		// document.write(digitWords(2,2));
+		//document.write((numDigits-i)%3);
+		//document.write("-");
+		//document.write(digitWords(parseInt(numDigitsTxt.charAt(i)),i%3));
+		//document.write(" ");
+		//document.write(Math.floor((numDigits - i -1)/3));
+		x = Math.floor((numDigits - i -1)/3);
+		thisDigit = parseInt(numDigitsTxt.charAt(i));
+		myWord = myWord + digitWords(thisDigit,(numDigits-i)%3,priorDigit) + " ";
+		if ( (numDigits - i) % 3 == 1) {myWord = myWord +displayMagnitude(x) + " "}
+		priorDigit = thisDigit;
+
+		//document.write(" <br />");
+	}
+	return myWord;
+	
+}
+
+function numOfCharsInNumber (theNum)
+{
+	x = displayNumberInWords(theNum);
+	x = (x.replace(/\s/gi,""));
+	y = x.length;
+	return y;
+}
+
+function cosmic(form)
+{
+	myNum = form.guess.value;
+	//document.write(myNum);
+	newNum = 0;
+
+if (myNum == 0)
+{ document.write("0 is 4<br />"); }
+else {
+	do
+	{
+		document.write(myNum);
+		document.write(" is ");
+		newNum = numOfCharsInNumber(myNum);
+		document.write(newNum);
+		document.write("<br />");
+		myNum = newNum;
+	}
+	while (myNum != 4);
+}
+document.write("4 is Cosmic<br /><br /><a href='javascript:location.reload(true)'>Try Again</a>");
+}
+
+</script>
+
+</head>
+
+<body>
+<h1>Four:  The Cosmic Number</h1>
+<form name="cosmicForm" action="javascript:cosmic(this.form)">
+Enter a number:  <input type="text" name="guess" /><br />
+<input type="submit" name="Prove It" value="Prove it" onclick="cosmic(this.form)">
+<br /><br /><i>You must enter a number for this to work.  Error trapping is NOT built in to this page.</i>
+</form>
+
+
+</body>
+
+</html>
